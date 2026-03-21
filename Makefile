@@ -9,7 +9,9 @@ SRC = src/main.cpp \
       src/integrity_analyzer.cpp \
       src/threat_classifier.cpp \
       src/report_generator.cpp \
-      src/utils.cpp
+      src/utils.cpp \
+      src/logger.cpp \
+      src/inotify_monitor.cpp
 
 INC = -Iinclude
 OUT = integrity_monitor

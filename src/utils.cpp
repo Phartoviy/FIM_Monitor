@@ -54,6 +54,14 @@ std::string formatTimestamp(int64_t unixTime) {
     return out.str();
 }
 
+std::string formatTimestampHuman(int64_t unixTime) {
+    std::time_t tt = static_cast<std::time_t>(unixTime);
+    std::tm tm = *std::localtime(&tt);
+    std::ostringstream out;
+    out << std::put_time(&tm, "%Y-%m-%d %H:%M:%S");
+    return out.str();
+}
+
 int64_t nowUnix() {
     return std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 }

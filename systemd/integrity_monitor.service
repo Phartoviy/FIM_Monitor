@@ -1,0 +1,15 @@
+[Unit]
+Description=Integrity Monitor (inotify mode)
+After=local-fs.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/integrity_monitor
+ExecStart=/opt/integrity_monitor/integrity_monitor --monitor /opt/integrity_monitor/config/integrity_monitor.conf
+Restart=always
+RestartSec=2
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -21,6 +21,8 @@ add_executable(integrity_monitor
     src/threat_classifier.cpp
     src/report_generator.cpp
     src/utils.cpp
+    src/logger.cpp
+    src/inotify_monitor.cpp
 )
 
 target_include_directories(integrity_monitor PRIVATE

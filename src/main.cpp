@@ -1,12 +1,13 @@
 #include "baseline_storage.h"
 #include "config_manager.h"
 #include "file_scanner.h"
+#include "inotify_monitor.h"
 #include "integrity_analyzer.h"
+#include "logger.h"
 #include "report_generator.h"
 #include "utils.h"
 
 #include <exception>
-#include <filesystem>
 #include <iostream>
 #include <string>
 
@@ -17,7 +18,8 @@ namespace {
 void printUsage(const char* program) {
     std::cerr << "Использование:\n"
               << "  " << program << " --init <config.conf>\n"
-              << "  " << program << " --scan <config.conf>\n";
+              << "  " << program << " --scan <config.conf>\n"
+              << "  " << program << " --monitor <config.conf>\n";
 }
 
 } // namespace
@@ -39,8 +41,8 @@ int main(int argc, char* argv[]) {
         if (mode == "--init") {
             const FileMap current = scanner.scan(config);
             storage.save(config.baselineFile, current);
-            std::cout << "Эталонная база создана: " << config.baselineFile << "\n";
-            std::cout << "Количество записей: " << current.size() << "\n";
+            Logger::info("Эталонная база создана: " + config.baselineFile);
+            Logger::info("Количество записей: " + std::to_string(current.size()));
             return 0;
         }
 
@@ -54,23 +56,25 @@ int main(int argc, char* argv[]) {
             ReportGenerator generator;
             const std::string reportPath = generator.writeCsv(config.reportDir, events);
 
-            std::cout << "Проверка завершена. Событий: " << events.size() << "\n";
-            std::cout << "Отчет: " << reportPath << "\n";
+            Logger::info("Проверка завершена. Событий: " + std::to_string(events.size()));
+            Logger::info("Отчет: " + reportPath);
 
             for (const auto& event : events) {
-                if (event.threatLevel >= 7) {
-                    std::cout << "[CRITICAL] level=" << event.threatLevel
-                              << " type=" << eventTypeToString(event.eventType)
-                              << " path=" << event.path << "\n";
-                }
+                Logger::event(event);
             }
+            return 0;
+        }
+
+        if (mode == "--monitor") {
+            InotifyMonitor monitor;
+            monitor.run(config);
             return 0;
         }
 
         printUsage(argv[0]);
         return 1;
     } catch (const std::exception& ex) {
-        std::cerr << "Ошибка: " << ex.what() << "\n";
+        Logger::error(std::string("Ошибка: ") + ex.what());
         return 2;
     }
 }
