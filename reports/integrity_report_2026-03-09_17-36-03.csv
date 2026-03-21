@@ -1,0 +1,3 @@
+timestamp,event_type,threat_level,path,description,old_hash,new_hash,old_mode,new_mode,old_uid,new_uid,old_gid,new_gid,old_symlink,new_symlink
+"2026-03-09_17-36-03","MetadataModified",5,"./sample_root/etc/pam.d/login","Изменены метаданные файла","fd0239f0df5bfecb83d61af0ed80e4d7c2edc391e08fdf0af0f80fceccdebd67","fd0239f0df5bfecb83d61af0ed80e4d7c2edc391e08fdf0af0f80fceccdebd67",448,384,0,0,0,0,"",""
+"2026-03-09_17-36-03","ContentModified",8,"./sample_root/bin/app","Изменено содержимое файла","fb2feb7ac6b83044b2a48b6aeb9bae8c7c0ee9a841d1e5e8ffb80560e41d2d5b","6af0636eac354127aa28dba7e7197247af5c7ccc605847472448fa693a3378a0",420,420,0,0,0,0,"",""
