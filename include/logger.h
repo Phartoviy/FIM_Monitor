@@ -15,6 +15,7 @@ public:
 
 private:
     static void write(const char* level, const std::string& message, bool stderrStream = false);
+    static void writeThreatEvent(const SecurityEvent& event);
 };
 
 std::string describeSecurityEvent(const SecurityEvent& event);
